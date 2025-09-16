@@ -88,6 +88,125 @@ Response
 }
 
 
+2. Export Todos ke Excel
+
+Endpoint
+
+GET /api/todos/export
+
+
+| Param    | Tipe      | Contoh       | Keterangan                 |
+| -------- | --------- | ------------ | -------------------------- |
+| title    | string    | belajar      | Partial match              |
+| assignee | string\[] | John,Doe     | Multi value (dipisah koma) |
+| start    | date      | 2025-09-01   | Range awal due\_date       |
+| end      | date      | 2025-09-30   | Range akhir due\_date      |
+| min      | integer   | 0            | Min time\_tracked          |
+| max      | integer   | 100          | Max time\_tracked          |
+| status   | string\[] | pending,open | Multi value                |
+| priority | string\[] | low,high     | Multi value                |
+
+
+GET /api/todos/export?title=belajar&assignee=Saul&start=2025-09-01&end=2025-09-30&min=0&max=100&status=pending,open&priority=high
+
+esponse
+
+Menghasilkan file Excel todos_export_YYYYMMDD_HHMMSS.xlsx
+
+Kolom: title, assignee, due_date, time_tracked, status, priority
+
+Baris terakhir berisi summary:
+
+Total Todos
+
+Total Time Tracked
+
+
+Contoh Hasil Excel (preview tabel Markdown)
+
+
+| title           | assignee | due\_date  | time\_tracked | status  | priority |
+| --------------- | -------- | ---------- | ------------- | ------- | -------- |
+| Belajar Laravel | Saul     | 2025-09-20 | 5             | open    | high     |
+| Belajar Export  | John     | 2025-09-25 | 10            | pending | high     |
+| **Summary**     | -        | -          | **15**        | **2**   | -        |
+
+
+
+3. Chart Data
+
+Endpoint
+
+GET /api/chart?type={status|priority|assignee}
+
+a. Status Summary
+GET /api/chart?type=status
+
+
+Response
+
+{
+  "status_summary": {
+    "pending": 5,
+    "open": 3,
+    "in_progress": 2,
+    "completed": 7
+  }
+}
+
+b. Priority Summary
+GET /api/chart?type=priority
+
+
+Response
+
+{
+  "priority_summary": {
+    "low": 4,
+    "medium": 6,
+    "high": 7
+  }
+}
+
+c. Assignee Summary
+GET /api/chart?type=assignee
+
+
+Response
+
+{
+  "assignee_summary": {
+    "Saul": {
+      "total_todos": 5,
+      "total_pending_todos": 2,
+      "total_timetracked_completed_todos": 8
+    },
+    "John": {
+      "total_todos": 3,
+      "total_pending_todos": 1,
+      "total_timetracked_completed_todos": 5
+    }
+  }
+}
+
+
+📥 Postman Collection
+Buat file Todo-API.postman_collection.json lalu import ke Postman.
+Contoh minimal collection sudah tersedia di atas dengan endpoint:
+
+POST /api/todos
+
+GET /api/todos/export
+
+GET /api/chart?type=status
+
+GET /api/chart?type=priority
+
+GET /api/chart?type=assignee
+
+
+
+
 👤 Author
 
 Nama: Saul Santo Anju
