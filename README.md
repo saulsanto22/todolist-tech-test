@@ -61,3 +61,37 @@ Body (JSON)
   "status": "open",
   "priority": "high"
 }
+
+Catatan Validasi
+
+title: wajib
+
+due_date: wajib, tidak boleh di masa lalu
+
+status: default pending jika tidak dikirim
+
+time_tracked: default 0 jika tidak dikirim
+
+priority: enum low, medium, high
+
+Response
+
+{
+  "id": 1,
+  "title": "Belajar Laravel",
+  "assignee": "Saul",
+  "due_date": "2025-09-20",
+  "time_tracked": 5,
+  "status": "open",
+  "priority": "high",
+  "created_at": "2025-09-17T10:00:00.000000Z"
+}
+
+
+👤 Author
+
+Nama: Saul Santo Anju
+Role: Backend Developer (Laravel, REST API, PostgreSQL)
+
+
+
