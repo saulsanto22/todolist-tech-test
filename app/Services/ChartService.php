@@ -35,8 +35,15 @@ class ChartService
     }
 
     private function assigneeSummary(): array {
-        $rows = Todo::selectRaw('assignee, COUNT(*) as total_todos, SUM(CASE WHEN status="pending" THEN 1 ELSE 0 END) as total_pending_todos, SUM(CASE WHEN status="completed" THEN time_tracked ELSE 0 END) as total_timetracked_completed_todos')
-            ->groupBy('assignee')->get();
+         $rows = Todo::selectRaw("
+            assignee, 
+            COUNT(*) as total_todos, 
+            SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as total_pending_todos, 
+            SUM(CASE WHEN status = 'completed' THEN time_tracked ELSE 0 END) as total_timetracked_completed_todos
+        ")
+        ->groupBy('assignee')
+        ->get();
+
         $out = [];
         foreach ($rows as $r) {
             $key = $r->assignee ?? 'Unassigned';
